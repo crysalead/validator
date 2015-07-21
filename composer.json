@@ -1,0 +1,23 @@
+{
+    "name": "crysalead/validator",
+    "description": "Validation Library",
+    "keywords": ["Validation"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.5",
+        "crysalead/set": "~1.0",
+        "crysalead/text": "~1.0"
+    },
+    "require-dev": {
+        "crysalead/kahlan": "~1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "validator\\": "src/",
+            "validator\\spec\\": "spec/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
