@@ -11,7 +11,7 @@ use text\Text;
  *
  * Example:
  * {{{
- * use chaos\model\Validator;
+ * use validator\Validator;
  *
  * $validator = new Validator();
  * $validator->rule('title', [
@@ -124,11 +124,11 @@ class Validator {
      * In addition to regular expressions, validation rules can also be defined as full anonymous
      * functions:
      * {{{
-     * use app\models\Account;
+     * use app\model\Account;
      *
      * $validator = new Validator();
      * $validator->add('accountActive', function($value, $options = []) {
-     *   $value = is_int($value) ? Account::first($value) : $value;
+     *   $value = is_int($value) ? Account::id($value) : $value;
      *   return (boolean) $value->is_active;
      * });
      *

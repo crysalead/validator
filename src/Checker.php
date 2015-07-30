@@ -16,7 +16,7 @@ use DateTime;
  *
 * Example:
  * {{{
- * use chaos\model\Checker;
+ * use validator\Checker;
  *
  * Checker::is('email', 'foo@example.com');
  * Checker::isEmail('foo@example.com');
