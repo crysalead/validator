@@ -91,6 +91,16 @@ describe("Validator", function() {
 
         });
 
+        it("overrides handlers", function() {
+
+            $validator = new Validator();
+            $validator->set('zeroToNine', '/^[0-5]$/');
+            $validator->set('zeroToNine', '/^[0-9]$/');
+
+            expect($validator->get('zeroToNine'))->toBe('/^[0-9]$/');
+
+        });
+
     });
 
     describe("->handlers()", function() {

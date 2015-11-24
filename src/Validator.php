@@ -106,7 +106,7 @@ class Validator {
      * For example:
      * {{{
      * $validator = new Validator();
-     * $validator->add('zeroToNine', '/^[0-9]$/');
+     * $validator->set('zeroToNine', '/^[0-9]$/');
      * $isValid = $validator->isZeroToNine('5'); // true
      * $isValid = $validator->isZeroToNine('20'); // false
      * }}}
@@ -115,7 +115,7 @@ class Validator {
      * as in the following:
      * {{{
      * $validator = new Validator();
-     * $validator->add([
+     * $validator->set([
      *  'zeroToNine' => '/^[0-9]$/',
      *  'tenToNineteen' => '/^1[0-9]$/',
      * ]);
@@ -127,7 +127,7 @@ class Validator {
      * use app\model\Account;
      *
      * $validator = new Validator();
-     * $validator->add('accountActive', function($value, $options = []) {
+     * $validator->set('accountActive', function($value, $options = []) {
      *   $value = is_int($value) ? Account::id($value) : $value;
      *   return (boolean) $value->is_active;
      * });
@@ -159,7 +159,7 @@ class Validator {
         if (!is_array($name)) {
             $name = [$name => $rule];
         }
-        $this->_handlers = $this->_handlers + $name;
+        $this->_handlers = $name + $this->_handlers;
     }
 
     /**
