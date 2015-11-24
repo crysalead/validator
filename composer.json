@@ -9,11 +9,15 @@
         "crysalead/text": "~1.0"
     },
     "require-dev": {
-        "crysalead/kahlan": "~1.1"
+        "crysalead/kahlan": "~1.2"
     },
     "autoload": {
         "psr-4": {
-            "validator\\": "src/",
+            "validator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "validator\\spec\\": "spec/"
         }
     },
