@@ -1,12 +1,12 @@
 <?php
-namespace validator\spec\suite;
+namespace Lead\Validator\Spec\Suite;
 
 use InvalidArgumentException;
 use stdClass;
 use DateTime;
-use validator\Checker;
+use Lead\Validator\Checker;
 
-use kahlan\plugin\Monkey;
+use Kahlan\Plugin\Monkey;
 
 describe("Checker", function() {
 
@@ -25,6 +25,19 @@ describe("Checker", function() {
 
         });
 
+        it("sets validation handlers", function() {
+
+            Checker::set('zeroToNine', '/^[0-9]$/');
+            Checker::set('tenToNineteen', '/^1[0-9]$/');
+
+            expect(Checker::has('zeroToNine'))->toBe(true);
+            expect(Checker::has('tenToNineteen'))->toBe(true);
+
+            expect(Checker::get('zeroToNine'))->toBe('/^[0-9]$/');
+            expect(Checker::get('tenToNineteen'))->toBe('/^1[0-9]$/');
+
+        });
+
     });
 
     describe("::get()", function() {
@@ -36,23 +49,6 @@ describe("Checker", function() {
             };
 
             expect($closure)->toThrow(new InvalidArgumentException("Unexisting `abc` as validation handler."));
-
-        });
-
-    });
-
-    describe("::set()", function() {
-
-        it("sets validation handlers", function() {
-
-            Checker::set('zeroToNine', '/^[0-9]$/');
-            Checker::set('tenToNineteen', '/^1[0-9]$/');
-
-            expect(Checker::has('zeroToNine'))->toBe(true);
-            expect(Checker::has('tenToNineteen'))->toBe(true);
-
-            expect(Checker::get('zeroToNine'))->toBe('/^[0-9]$/');
-            expect(Checker::get('tenToNineteen'))->toBe('/^1[0-9]$/');
 
         });
 
@@ -481,7 +477,7 @@ describe("Checker", function() {
 
         });
 
-        it("checks emails values", function() {
+        it("checks values are equals", function() {
 
             expect(Checker::is('equalTo', 'abcdef', [
                 'key' => 'password_confirmation',
@@ -672,7 +668,9 @@ describe("Checker", function() {
 
         it("checks ip values", function() {
 
-            expect(Checker::is('ip', '127.0.0.1', ['contains' => false]))->toBe(true);
+            expect(Checker::is('ip', '127.0.0.1'))->toBe(true);
+            expect(Checker::is('ip', '2607:f0d0:1002:51::4'))->toBe(true);
+            expect(Checker::is('ip', '2607:f0d0:1002:0051:0000:0000:0000:0004'))->toBe(true);
 
         });
 

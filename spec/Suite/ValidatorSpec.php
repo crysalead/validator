@@ -1,10 +1,10 @@
 <?php
-namespace validator\spec\suite;
+namespace Lead\Validator\Spec\Suite;
 
 use InvalidArgumentException;
 use DateTime;
-use validator\Validator;
-use validator\Checker;
+use Lead\Validator\Validator;
+use Lead\Validator\Checker;
 
 use kahlan\plugin\Stub;
 

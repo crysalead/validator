@@ -1,10 +1,10 @@
 <?php
-namespace validator;
+namespace Lead\Validator;
 
 use Closure;
 use InvalidArgumentException;
-use set\Set;
-use text\Text;
+use Lead\Set\Set;
+use Lead\Text\Text;
 
 /**
  * The `Validator` class provides the necessary logic to perform some validation on data.
@@ -30,7 +30,7 @@ class Validator {
      * @var array
      */
     protected $_classes = [
-        'checker' => 'validator\Checker'
+        'checker' => 'Lead\Validator\Checker'
     ];
 
     /**
@@ -154,7 +154,7 @@ class Validator {
      *                     closure that returns a boolean indicating success. Should be left blank if
      *                     `$name` is an array.
      */
-    public function set($name, $rule = null, $options = [])
+    public function set($name, $rule = null)
     {
         if (!is_array($name)) {
             $name = [$name => $rule];
@@ -318,8 +318,6 @@ class Validator {
                     $this->_errors[$field][] = $error('required', $rule, $this->_meta);
                     break;
                 } else {
-                    $success = true;
-
                     foreach ($values as $key => $value) {
                         if (empty($value) && $rule['skipEmpty']) {
                             continue;
@@ -396,9 +394,10 @@ class Validator {
      * @param  array $base The dotted fielname path of the data.
      * @return array       The extracted values.
      */
-    public static function values($data, $path = [], $base = 0)
+    public static function values($data, $path = [], $base = null)
     {
         if (!$path) {
+            $base = $base ?: 0;
             return [$base => $data];
         }
 

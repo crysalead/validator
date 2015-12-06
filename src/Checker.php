@@ -1,5 +1,5 @@
 <?php
-namespace validator;
+namespace Lead\Validator;
 
 use InvalidArgumentException;
 use Closure;
@@ -306,25 +306,31 @@ class Checker {
     {
         $defaults = ['check' => 'any'];
         $options += $defaults;
-
         $params = [];
+
+        if (is_callable($handlers)) {
+            return call_user_func_array($handlers, [$value, $options, &$params]);
+        }
+
+        if (is_string($handlers)) {
+            return preg_match($handlers, $value);
+        }
+
+        $success = true;
         $any = $options['check'] === 'any';
         $formats = (array) $options['check'];
 
-        foreach ($handlers as $index => $check) {
+        foreach ($handlers as $index => $handler) {
             if (!$any && !in_array($index, $formats)) {
                 continue;
             }
-
-            if (is_string($check)) {
-                if (preg_match($check, $value)) {
-                    return true;
-                }
-            } elseif (call_user_func_array($check, [$value, $options, &$params])) {
-                return true;
+            if (static::check($value, $handler, $options, $params)) {
+              return true;
+            } else {
+              $success = false;
             }
         }
-        return false;
+        return $success;
     }
 
     /**
@@ -509,7 +515,7 @@ class Checker {
                 }
                 return false;
             },
-            'empty'  => '/^\\s*$/',
+            'empty'  => '/^\s*$/',
             'equalTo' => function($value, $options = [], &$params = []) {
                 if (!isset($options['key'])) {
                     return false;
