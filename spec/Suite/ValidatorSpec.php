@@ -201,10 +201,10 @@ describe("Validator", function() {
 
             $this->validator->rule('title', 'not:empty');
 
-            expect($this->validator->validate([]))->toBe(false);
+            expect($this->validator->validates([]))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['is required']]);
 
-            expect($this->validator->validate(['title' => '']))->toBe(false);
+            expect($this->validator->validates(['title' => '']))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['must not be a empty']]);
 
         });
@@ -215,10 +215,10 @@ describe("Validator", function() {
                 'not:empty' => ['message' => 'please enter a title']
             ]);
 
-            expect($this->validator->validate([]))->toBe(false);
+            expect($this->validator->validates([]))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['is required']]);
 
-            expect($this->validator->validate(['title' => '']))->toBe(false);
+            expect($this->validator->validates(['title' => '']))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['please enter a title']]);
 
         });
@@ -227,7 +227,7 @@ describe("Validator", function() {
 
             $this->validator->rule('title', ['not:empty' => 'please enter a title']);
 
-            expect($this->validator->validate(['title' => '']))->toBe(false);
+            expect($this->validator->validates(['title' => '']))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['please enter a title']]);
 
         });
@@ -239,10 +239,10 @@ describe("Validator", function() {
                 'lengthBetween' => ['min' => 1, 'max' => 7, 'message' => 'must be between {:min} and {:max} character long']
             ]);
 
-            expect($this->validator->validate([]))->toBe(false);
+            expect($this->validator->validates([]))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['is required']]);
 
-            expect($this->validator->validate(['title' => '']))->toBe(false);
+            expect($this->validator->validates(['title' => '']))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => [
                 'please enter a title',
                 'must be between 1 and 7 character long'
@@ -259,7 +259,7 @@ describe("Validator", function() {
                 ]
             ]);
 
-            expect($this->validator->validate([]))->toBe(true);
+            expect($this->validator->validates([]))->toBe(true);
             expect($this->validator->errors())->toBe([]);
 
         });
@@ -273,7 +273,7 @@ describe("Validator", function() {
                 ]
             ]);
 
-            expect($this->validator->validate(['title' => '']))->toBe(true);
+            expect($this->validator->validates(['title' => '']))->toBe(true);
             expect($this->validator->errors())->toBe([]);
 
         });
@@ -281,7 +281,7 @@ describe("Validator", function() {
         it("passes if valid", function() {
 
             $this->validator->rule('title', 'not:empty');
-            expect($this->validator->validate(['title' => 'new title']))->toBe(true);
+            expect($this->validator->validates(['title' => 'new title']))->toBe(true);
 
             expect($this->validator->errors())->toBe([]);
 
@@ -296,7 +296,7 @@ describe("Validator", function() {
                 ]
             ]);
 
-            expect($this->validator->validate(['title' => ''], ['events' => 'create']))->toBe(false);
+            expect($this->validator->validates(['title' => ''], ['events' => 'create']))->toBe(false);
             expect($this->validator->errors())->toBe(['title' => ['please enter a title']]);
 
         });
@@ -310,7 +310,7 @@ describe("Validator", function() {
                 ]
             ]);
 
-            expect($this->validator->validate(['title' => ''], ['events' => 'update']))->toBe(true);
+            expect($this->validator->validates(['title' => ''], ['events' => 'update']))->toBe(true);
             expect($this->validator->errors())->toBe([]);
 
         });
@@ -319,7 +319,7 @@ describe("Validator", function() {
 
             $this->validator->rule('emails.*', 'email');
 
-            expect($this->validator->validate(['emails' => ['willy@boy.com', 'johnny@boy.com']]))->toBe(true);
+            expect($this->validator->validates(['emails' => ['willy@boy.com', 'johnny@boy.com']]))->toBe(true);
             expect($this->validator->errors())->toBe([]);
 
         });
@@ -328,10 +328,10 @@ describe("Validator", function() {
 
             $this->validator->rule('emails.*', 'email');
 
-            expect($this->validator->validate(['emails' => ['invalid', 'johnny@boy.com']]))->toBe(false);
+            expect($this->validator->validates(['emails' => ['invalid', 'johnny@boy.com']]))->toBe(false);
             expect($this->validator->errors())->toBe(['emails.0' => ['is not a valid email address']]);
 
-            expect($this->validator->validate(['emails' => ['willy@boy.com', 'invalid']]))->toBe(false);
+            expect($this->validator->validates(['emails' => ['willy@boy.com', 'invalid']]))->toBe(false);
             expect($this->validator->errors())->toBe(['emails.1' => ['is not a valid email address']]);
 
         });
@@ -340,7 +340,7 @@ describe("Validator", function() {
 
             $this->validator->rule('people.*.email', 'email');
 
-            expect($this->validator->validate([
+            expect($this->validator->validates([
                 'people' => [
                     ['email' => 'willy@boy.com'],
                     ['email' => 'johnny@boy.com']
@@ -355,7 +355,7 @@ describe("Validator", function() {
 
             $this->validator->rule('people.*.email', 'email');
 
-            expect($this->validator->validate([
+            expect($this->validator->validates([
                 'people' => [
                     ['email' => 'invalid'],
                     ['email' => 'johnny@boy.com']
@@ -364,7 +364,7 @@ describe("Validator", function() {
 
             expect($this->validator->errors())->toBe(['people.0.email' => ['is not a valid email address']]);
 
-            expect($this->validator->validate([
+            expect($this->validator->validates([
                 'people' => [
                     ['email' => 'willy@boy.com'],
                     ['email' => 'invalid']
@@ -431,7 +431,7 @@ describe("Validator", function() {
                 return false;
             });
 
-            expect($this->validator->validate([
+            expect($this->validator->validates([
                 'accepted'      => '',
                 'alphaNumeric'  => '',
                 'boolean'       => '',

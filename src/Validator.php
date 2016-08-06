@@ -17,7 +17,7 @@ use Lead\Text\Text;
  * $validator->rule('title', [
  *     'not:empty' => ['message' => 'please enter a title']
  * ]);
- * $validator->validate(['title' => 'new title']); // true
+ * $validator->validates(['title' => 'new title']); // true
  * }}}
  *
  * @see Checker class for all built-in rules
@@ -295,7 +295,7 @@ class Validator {
      *                         where each key matches a key in `$values`, and each value is an array of
      *                         that element's validation errors.
      */
-    public function validate($data, $options = [])
+    public function validates($data, $options = [])
     {
         $events = (array) (isset($options['events']) ? $options['events'] : null);
 
