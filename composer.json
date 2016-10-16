@@ -3,13 +3,18 @@
     "description": "Validation Library",
     "keywords": ["Validation"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "CrysaLEAD"
+        }
+    ],
     "require": {
         "php": ">=5.5",
         "crysalead/set": "~2.0",
         "crysalead/text": "~2.0"
     },
     "require-dev": {
-        "crysalead/kahlan": "~2.0"
+        "kahlan/kahlan": "~3.0"
     },
     "autoload": {
         "psr-4": {

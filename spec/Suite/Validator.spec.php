@@ -6,7 +6,7 @@ use DateTime;
 use Lead\Validator\Validator;
 use Lead\Validator\Checker;
 
-use kahlan\plugin\Stub;
+use Kahlan\Plugin\Double;
 
 describe("Validator", function() {
 
@@ -140,7 +140,7 @@ describe("Validator", function() {
     describe("->is()", function() {
 
         beforeEach(function() {
-            $this->checker = Stub::classname(['extends' => Checker::class]);
+            $this->checker = Double::classname(['extends' => Checker::class]);
             $this->validator = new Validator([
                 'classes' => [
                     'checker' => $this->checker
@@ -164,7 +164,7 @@ describe("Validator", function() {
     describe("->__call()", function() {
 
         beforeEach(function() {
-            $this->checker = Stub::classname(['extends' => Checker::class]);
+            $this->checker = Double::classname(['extends' => Checker::class]);
             $this->validator = new Validator([
                 'classes' => [
                     'checker' => $this->checker
