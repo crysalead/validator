@@ -1,6 +1,7 @@
 <?php
 namespace Lead\Validator;
 
+use Exception;
 use InvalidArgumentException;
 use Closure;
 use DateTime;
@@ -313,7 +314,13 @@ class Checker {
         }
 
         if (is_string($handlers)) {
-            return preg_match($handlers, $value);
+            if (is_scalar($value)) {
+                return preg_match($handlers, (string) $value);
+            }
+            if ($handlers === static::get('empty')) {
+                return !$value;
+            }
+            throw new Exception("Regex validation rules can't be applied on objects.");
         }
 
         $success = true;
@@ -325,9 +332,9 @@ class Checker {
                 continue;
             }
             if (static::check($value, $handler, $options, $params)) {
-              return true;
+                return true;
             } else {
-              $success = false;
+                $success = false;
             }
         }
         return $success;

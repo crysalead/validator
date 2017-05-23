@@ -1,6 +1,7 @@
 <?php
 namespace Lead\Validator\Spec\Suite;
 
+use Exception;
 use InvalidArgumentException;
 use stdClass;
 use DateTime;
@@ -148,6 +149,7 @@ describe("Checker", function() {
             expect(Checker::is('empty', '12234'))->toBe(false);
             expect(Checker::is('empty', 'dfdQSD'))->toBe(false);
             expect(Checker::is('empty', 'こんにちは！'))->toBe(false);
+            expect(Checker::is('empty', new DateTime()))->toBe(false);
 
         });
 
@@ -762,6 +764,7 @@ describe("Checker", function() {
             expect(Checker::is('not:empty', 'José'))->toBe(true);
             expect(Checker::is('not:empty', 'é'))->toBe(true);
             expect(Checker::is('not:empty', 'π'))->toBe(true);
+            expect(Checker::is('not:empty', new DateTime()))->toBe(true);
 
             expect(Checker::is('not:empty', "\t "))->toBe(false);
             expect(Checker::is('not:empty', ""))->toBe(false);
@@ -844,6 +847,16 @@ describe("Checker", function() {
             expect(Checker::is('inList', 'one', ['list' => ['one', 'two']]))->toBe(true);
             expect(Checker::is('not:inList', 'one', ['list' => ['one', 'two']]))->toBe(false);
             expect(Checker::isNotInList('one', ['list' => ['one', 'two']]))->toBe(false);
+
+        });
+
+        it("throws an exception when trying to apply a regex rules on an object", function() {
+
+            $closure = function() {
+                Checker::is('uuid', new DateTime());
+            };
+
+            expect($closure)->toThrow(new Exception("Regex validation rules can't be applied on objects."));
 
         });
 
