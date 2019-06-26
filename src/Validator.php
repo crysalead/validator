@@ -409,7 +409,7 @@ class Validator {
                 $values = array_merge($values, static::values($value, $path, $base . '.' . $key));
             }
             return $values;
-        } elseif (!array_key_exists($field, $data)) {
+        } elseif (!isset($data[$field])) {
             return [];
         } elseif (!$path) {
             return [$base ? $base . '.' . $field : $field => $data[$field]];

@@ -374,15 +374,6 @@ describe("Validator", function() {
             expect($this->validator->errors())->toBe(['people.1.email' => ['is not a valid email address']]);
         });
 
-        it("allows null as a value", function() {
-
-            $this->validator->rule('title', ['not:empty' => 'please enter a title']);
-
-            expect($this->validator->validates(['title' => null]))->toBe(false);
-            expect($this->validator->errors())->toBe(['title' => ['please enter a title']]);
-
-        });
-
     });
 
     describe("->message()", function() {
