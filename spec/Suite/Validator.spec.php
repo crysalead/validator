@@ -264,18 +264,29 @@ describe("Validator", function() {
 
         });
 
-        it("passes for rules with empty data but allowed by skipEmpty", function() {
+        it("passes for rules with `null` data but allowed by skipNull", function() {
 
+            $this->validator->rule('title', [
+                'not:empty'     => [
+                    'message'  => 'please enter a {:field}',
+                    'skipNull' => true
+                ]
+            ]);
+
+            expect($this->validator->validates(['title' => null]))->toBe(true);
+            expect($this->validator->errors())->toBe([]);
+
+        });
+
+        it("passes for rules with empty data but allowed by skipEmpty", function() {
             $this->validator->rule('title', [
                 'not:empty'     => [
                     'message'   => 'please enter a {:field}',
                     'skipEmpty' => true
                 ]
             ]);
-
             expect($this->validator->validates(['title' => '']))->toBe(true);
             expect($this->validator->errors())->toBe([]);
-
         });
 
         it("passes if valid", function() {
@@ -547,11 +558,45 @@ describe("Validator", function() {
 
     describe("::values()", function() {
 
-        it("returns the wrapped data when no path is defined", function() {
+        it("returns the extracted data when no path is defined", function() {
 
             $data = ['title' => 'new title'];
 
             expect(Validator::values($data))->toBe([$data]);
+
+            expect(Validator::values($data, ['title']))->toBe($data);
+
+        });
+
+        it("returns null data", function() {
+
+            $data = ['title' => null];
+
+            expect(Validator::values($data))->toBe([$data]);
+            expect(Validator::values($data, ['title']))->toBe($data);
+
+        });
+
+        it("returns the extracted data when a path is defined", function() {
+
+            $data = [
+                'people' => [
+                    ['email' => 'willy@boy.com'],
+                    ['email' => 'johnny@boy.com']
+                ]
+            ];
+
+            expect(Validator::values($data, ['people']))->toBe($data);
+
+            expect(Validator::values($data, ['people', '*']))->toBe([
+                'people.0' => ['email' => 'willy@boy.com'],
+                'people.1' => ['email' => 'johnny@boy.com']
+            ]);
+
+            expect(Validator::values($data, ['people', '*', 'email']))->toBe([
+                'people.0.email' => 'willy@boy.com',
+                'people.1.email' => 'johnny@boy.com'
+            ]);
 
         });
 

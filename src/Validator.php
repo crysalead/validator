@@ -223,6 +223,7 @@ class Validator {
             'message' => null,
             'required' => true,
             'skipEmpty' => false,
+            'skipNull' => false,
             'format' => 'any',
             'not' => false,
             'on' => null
@@ -282,9 +283,12 @@ class Validator {
      *                       - `'required`' _boolean_: Represents whether the value is required to be
      *                         present in `$values`. If `'required'` is set to `false`, the validation rule
      *                         will be skipped if the corresponding key is not present. Defaults to `true`.
-     *                       - `'skipEmpty'` _boolean_: Similar to `'required'`, this setting (if `true`)
-     *                         will cause the validation rule to be skipped if the corresponding value
-     *                         is empty (an empty string or `null`). Defaults to `false`.
+     *                       - `'skipNull'` _boolean_: This setting (if `true`) will cause the validation rule
+     *                         to be skipped if the corresponding value is `null`.
+     *                         Defaults to `false`.
+     *                       - `'skipEmpty'` _boolean_: This setting (if `true`) will cause the validation rule
+     *                         to be skipped if the corresponding value is empty (an empty string or `null`).
+     *                         Defaults to `false`.
      *                       - `'format'` _string_: If the validation rule has multiple format definitions
      *                         (see the `add()` or `init()` methods), the name of the format to be used
      *                         can be specified here. Additionally, two special values can be used:
@@ -317,14 +321,16 @@ class Validator {
                     $rule['message'] = null;
                     $this->_errors[$field][] = $error('required', $rule, $this->_meta);
                     break;
-                } else {
-                    foreach ($values as $key => $value) {
-                        if (empty($value) && $rule['skipEmpty']) {
-                            continue;
-                        }
-                        if (!$this->is($name, $value, $rule + compact('data'), $params)) {
-                            $this->_errors[$key][] = $error($name, $params + $rule, $this->_meta);
-                        }
+                }
+
+                foreach ($values as $key => $value) {
+                    if ($value === null && $rule['skipNull']) {
+                        continue;
+                    } elseif (empty($value) && $rule['skipEmpty']) {
+                        continue;
+                    }
+                    if (!$this->is($name, $value, $rule + compact('data'), $params)) {
+                        $this->_errors[$key][] = $error($name, $params + $rule, $this->_meta);
                     }
                 }
             }
@@ -409,7 +415,7 @@ class Validator {
                 $values = array_merge($values, static::values($value, $path, $base . '.' . $key));
             }
             return $values;
-        } elseif (!isset($data[$field])) {
+        } elseif (!array_key_exists($field, $data)) {
             return [];
         } elseif (!$path) {
             return [$base ? $base . '.' . $field : $field => $data[$field]];
