@@ -600,6 +600,52 @@ describe("Validator", function() {
 
         });
 
+        it("returns the extracted data when a path is defined on documents", function() {
+
+            class Document implements \ArrayAccess {
+                protected $_data = [];
+                public function __construct($data)
+                {
+                    $this->_data = $data;
+                }
+                public function offsetSet($offset, $value) {
+                    $this->_data[$offset] = $value;
+                }
+                public function offsetExists($offset) {
+                    return array_key_exists($offset, $this->_data);
+                }
+                public function offsetUnset($offset) {
+                    unset($this->_data[$offset]);
+                }
+                public function offsetGet($offset) {
+                    return $this->_data[$offset];
+                }
+            };
+
+            $email1 = new Document(['email' => 'willy@boy.com']);
+            $email2 = new Document(['email' => 'johnny@boy.com']);
+
+            $data = [
+                'people' => [
+                    $email1,
+                    $email2
+                ]
+            ];
+
+            expect(Validator::values($data, ['people']))->toBe($data);
+
+            expect(Validator::values($data, ['people', '*']))->toBe([
+                'people.0' => $email1,
+                'people.1' => $email2
+            ]);
+
+            expect(Validator::values($data, ['people', '*', 'email']))->toBe([
+                'people.0.email' => 'willy@boy.com',
+                'people.1.email' => 'johnny@boy.com'
+            ]);
+
+        });
+
     });
 
 });
