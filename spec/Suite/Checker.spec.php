@@ -495,6 +495,70 @@ describe("Checker", function() {
 
         });
 
+        it("checks values are equals allowing null as key", function() {
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'data'  => ['password' => null]
+            ]))->toBe(false);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipNullKey' => true,
+                'data'  => ['password' => null]
+            ]))->toBe(true);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipNullKey' => true
+            ]))->toBe(true);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipNullKey' => true,
+                'data'  => ['password' => '']
+            ]))->toBe(false);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipNullKey' => true,
+                'data'  => ['password' => '0']
+            ]))->toBe(false);
+
+        });
+
+        it("checks values are equals allowing empty as key", function() {
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'data'  => ['password' => null]
+            ]))->toBe(false);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipEmptyKey' => true,
+                'data'  => ['password' => null]
+            ]))->toBe(true);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipEmptyKey' => true
+            ]))->toBe(true);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipEmptyKey' => true,
+                'data'  => ['password' => '']
+            ]))->toBe(true);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipEmptyKey' => true,
+                'data'  => ['password' => '0']
+            ]))->toBe(false);
+
+        });
+
         it("checks emails values", function() {
 
             expect(Checker::is('email', 'abc.efg@domain.com'))->toBe(true);

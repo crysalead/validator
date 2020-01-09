@@ -75,8 +75,8 @@ use DateTime;
  *   value. Whitespace characters include spaces, tabs, carriage returns and newlines.
  *
  * - `equalTo`: This rule will ensure that the value is equal to another field. The available
- *   options are `'key'` and `'data'`, which designate the matching key and the data array the
- *   value must match on.
+ *   options are `'key'`, `'skipEmptyKey'`, `'skipNullKey'`, `'key'` and `'data'`, which designate
+ *   the matching key and the data array the value must match on.
  *
  * - `inList`: Checks that a value is in a pre-defined list of values. This validator accepts one
  *   option, `'list'`, which is an array containing acceptable values.
@@ -528,7 +528,13 @@ class Checker {
                     return false;
                 }
                 $field = $options['key'];
-                return isset($options['data'][$field]) && $value == $options['data'][$field];
+                $target = isset($options['data'][$field]) ? $options['data'][$field] : null;
+                if ($target === null && (!empty($options['skipNullKey']) || !empty($options['skipEmptyKey']))) {
+                    return true;
+                } elseif ($target === '' && !empty($options['skipEmptyKey'])) {
+                    return true;
+                }
+                return $value === $target;
             },
             'inList' => function($value, $options) {
                 $options += ['list' => []];
