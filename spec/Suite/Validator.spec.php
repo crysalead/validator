@@ -266,27 +266,40 @@ describe("Validator", function() {
 
         it("passes for rules with `null` data but allowed by skipNull", function() {
 
-            $this->validator->rule('title', [
-                'not:empty'     => [
-                    'message'  => 'please enter a {:field}',
+            $this->validator->rule('phone', [
+                'phone'     => [
+                    'message'   => 'please enter a phone',
                     'skipNull' => true
                 ]
             ]);
 
-            expect($this->validator->validates(['title' => null]))->toBe(true);
+            expect($this->validator->validates(['phone' => null]))->toBe(true);
             expect($this->validator->errors())->toBe([]);
+
+            expect($this->validator->validates(['phone' => '']))->toBe(false);
+            expect($this->validator->validates(['phone' => '0']))->toBe(false);
+            expect($this->validator->validates(['phone' => 0]))->toBe(false);
 
         });
 
         it("passes for rules with empty data but allowed by skipEmpty", function() {
-            $this->validator->rule('title', [
-                'not:empty'     => [
-                    'message'   => 'please enter a {:field}',
+
+            $this->validator->rule('phone', [
+                'phone'     => [
+                    'message'   => 'please enter a phone',
                     'skipEmpty' => true
                 ]
             ]);
-            expect($this->validator->validates(['title' => '']))->toBe(true);
+
+            expect($this->validator->validates(['phone' => null]))->toBe(true);
             expect($this->validator->errors())->toBe([]);
+
+            expect($this->validator->validates(['phone' => '']))->toBe(true);
+            expect($this->validator->errors())->toBe([]);
+
+            expect($this->validator->validates(['phone' => '0']))->toBe(false);
+            expect($this->validator->validates(['phone' => 0]))->toBe(false);
+
         });
 
         it("passes if valid", function() {

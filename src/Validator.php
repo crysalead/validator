@@ -324,9 +324,9 @@ class Validator {
                 }
 
                 foreach ($values as $key => $value) {
-                    if ($value === null && $rule['skipNull']) {
+                    if ($value === null && ($rule['skipNull'] || $rule['skipEmpty'])) {
                         continue;
-                    } elseif (empty($value) && $rule['skipEmpty']) {
+                    } elseif ($value === '' && $rule['skipEmpty']) {
                         continue;
                     }
                     if (!$this->is($name, $value, $rule + compact('data'), $params)) {
