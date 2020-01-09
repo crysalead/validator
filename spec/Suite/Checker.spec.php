@@ -525,6 +525,12 @@ describe("Checker", function() {
                 'data'  => ['password' => '0']
             ]))->toBe(false);
 
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipNullKey' => true,
+                'data'  => ['password' => 0]
+            ]))->toBe(false);
+
         });
 
         it("checks values are equals allowing empty as key", function() {
@@ -555,6 +561,12 @@ describe("Checker", function() {
                 'key' => 'password',
                 'skipEmptyKey' => true,
                 'data'  => ['password' => '0']
+            ]))->toBe(false);
+
+            expect(Checker::is('equalTo', 'abcdef', [
+                'key' => 'password',
+                'skipEmptyKey' => true,
+                'data'  => ['password' => 0]
             ]))->toBe(false);
 
         });
