@@ -731,9 +731,11 @@ describe("Checker", function() {
 
         it("checks integer values", function() {
 
+            expect(Checker::is('integer', '0'))->toBe(true);
             expect(Checker::is('integer', '27'))->toBe(true);
             expect(Checker::is('integer', '-27'))->toBe(true);
             expect(Checker::is('integer', '+27'))->toBe(true);
+            expect(Checker::is('integer', 0))->toBe(true);
             expect(Checker::is('integer', 27))->toBe(true);
             expect(Checker::is('integer', -27))->toBe(true);
             expect(Checker::is('integer', +27))->toBe(true);

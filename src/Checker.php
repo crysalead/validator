@@ -502,13 +502,13 @@ class Checker {
                         return false;
                     }
                 }
-                return filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE) !== null;
+                return filter_var($value, FILTER_VALIDATE_FLOAT) !== false;
             },
             'email' => function($value, $options = [], &$params = []) {
                 $defaults = ['deep' => false];
                 $options += $defaults;
 
-                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
                     return false;
                 }
                 if (!$options['deep']) {
@@ -560,11 +560,11 @@ class Checker {
             },
             'integer' => function($value, $options = [], &$params = []) {
                 $options += ['flags' => []];
-                return filter_var($value, FILTER_VALIDATE_INT, $options);
+                return filter_var($value, FILTER_VALIDATE_INT, $options) !== false;
             },
             'ip' => function($value, $options = [], &$params = []) {
                 $options += ['flags' => []];
-                return (boolean) filter_var($value, FILTER_VALIDATE_IP, $options);
+                return filter_var($value, FILTER_VALIDATE_IP, $options) !== false;
             },
             'length' => function($value, $options = [], &$params = []) {
                 return isset($options['length']) && strlen($value) === $options['length'];
@@ -618,7 +618,7 @@ class Checker {
             'time' => '%^((0?[1-9]|1[012])(:[0-5]\d){0,2}([AP]M|[ap]m))$|^([01]\d|2[0-3])(:[0-5]\d){0,2}$%',
             'url' => function($value, $options = [], &$params = []) {
                 $options += ['flags' => []];
-                return (boolean) filter_var($value, FILTER_VALIDATE_URL, $options);
+                return filter_var($value, FILTER_VALIDATE_URL, $options) !== false;
             },
             'uuid' => "/^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$/"
         ]);
