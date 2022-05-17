@@ -621,15 +621,19 @@ describe("Validator", function() {
                 {
                     $this->_data = $data;
                 }
+                #[\ReturnTypeWillChange]
                 public function offsetSet($offset, $value) {
                     $this->_data[$offset] = $value;
                 }
+                #[\ReturnTypeWillChange]
                 public function offsetExists($offset) {
                     return array_key_exists($offset, $this->_data);
                 }
+                #[\ReturnTypeWillChange]
                 public function offsetUnset($offset) {
                     unset($this->_data[$offset]);
                 }
+                #[\ReturnTypeWillChange]
                 public function offsetGet($offset) {
                     return $this->_data[$offset];
                 }

@@ -264,8 +264,6 @@ class Checker {
         }
 
         $handlers = static::get($name);
-        $handlers = is_array($handlers) ? $handlers : [$handlers];
-
         return static::check($value, $handlers, $options, $params) !== $not;
     }
 
@@ -315,7 +313,7 @@ class Checker {
 
         if (is_string($handlers)) {
             if (is_scalar($value)) {
-                return preg_match($handlers, (string) $value);
+                return !!preg_match($handlers, (string) $value);
             }
             if ($handlers === static::get('empty')) {
                 return !$value;

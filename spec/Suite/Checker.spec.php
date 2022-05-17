@@ -945,7 +945,7 @@ describe("Checker", function() {
         it("delegates to the checker", function() {
 
             $handler = Checker::get('alphaNumeric');
-            expect(Checker::class)->toReceive('::check')->with('frferrf', [$handler] , [
+            expect(Checker::class)->toReceive('::check')->with('frferrf', $handler , [
                 'hello' => 'world'
             ]);
 
